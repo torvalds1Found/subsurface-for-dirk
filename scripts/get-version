@@ -15,6 +15,9 @@ croak() {
 [ $# -ge 1 ] || croak "missing OS argument"
 os=$1
 
+# fail silently if this isn't a git tree
+[ -d .git ] || exit 1
+
 if [ $# -eq 2 ] && [ "$2" ]; then
 	v0=$2
 else
