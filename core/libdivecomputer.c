@@ -1070,7 +1070,7 @@ const char *do_libdivecomputer_import(device_data_t *data)
 #if defined(SSRF_CUSTOM_SERIAL)
 	if (data->bluetooth_mode) {
 #if defined(BT_SUPPORT) && defined(SSRF_CUSTOM_SERIAL)
-		rc = dc_context_set_custom_serial(data->context, get_qt_serial_ops());
+		rc = dc_context_set_custom_serial(data->context, get_qt_serial_ops(data));
 #endif
 #ifdef SERIAL_FTDI
 	} else if (!strcmp(data->devname, "ftdi")) {

@@ -8,6 +8,8 @@
 
 #include <libdivecomputer/version.h>
 
+#include "libdivecomputer.h"
+
 #if defined(SSRF_CUSTOM_SERIAL)
 
 #if defined(Q_OS_WIN)
@@ -396,7 +398,7 @@ dc_custom_serial_t qt_serial_ops = {
 	.set_break = NULL
 };
 
-dc_custom_serial_t* get_qt_serial_ops() {
+dc_custom_serial_t* get_qt_serial_ops(device_data_t *data) {
 	return (dc_custom_serial_t*) &qt_serial_ops;
 }
 

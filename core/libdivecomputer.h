@@ -56,10 +56,7 @@ extern char *logfile_name;
 extern char *dumpfile_name;
 
 #if SSRF_CUSTOM_SERIAL
-// WTF. this symbol never shows up at link time
-//extern dc_custom_serial_t qt_serial_ops;
-// Thats why I've worked around it with a stupid helper returning it.
-dc_custom_serial_t* get_qt_serial_ops();
+extern dc_custom_serial_t* get_qt_serial_ops(device_data_t *);
 extern dc_custom_serial_t serial_ftdi_ops;
 #endif
 
