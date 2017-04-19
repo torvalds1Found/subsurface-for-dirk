@@ -380,7 +380,7 @@ static dc_status_t qt_serial_set_timeout(void **userdata, long timeout)
 	return DC_STATUS_SUCCESS;
 }
 
-dc_custom_serial_t qt_serial_ops = {
+static dc_custom_serial_t qt_serial_ops = {
 	.userdata = NULL,
 	.open = qt_serial_open,
 	.close = qt_serial_close,
@@ -398,8 +398,37 @@ dc_custom_serial_t qt_serial_ops = {
 	.set_break = NULL
 };
 
-dc_custom_serial_t* get_qt_serial_ops(device_data_t *data) {
-	return (dc_custom_serial_t*) &qt_serial_ops;
+//
+// Some day these will be different operations that use the
+// BLE GATT protocol to fake "serial" communications.
+//
+// Typically you'd emulate a serial connection over BLE GATT
+// by doing writes by writing to one descriptor, and reads
+// happen as notifications on another one.
+//
+static dc_custom_serial_t qt_serial_ble_ops = {
+	.userdata = NULL,
+	.open = qt_serial_open,
+	.close = qt_serial_close,
+	.read = qt_serial_read,
+	.write = qt_serial_write,
+	.purge = qt_serial_flush,
+	.get_available = qt_serial_get_received,
+	.set_timeout = qt_serial_set_timeout,
+// These doesn't make sense over bluetooth
+// NULL means NOP
+	.configure = NULL,
+	.set_dtr = NULL,
+	.set_rts = NULL,
+	.set_halfduplex = NULL,
+	.set_break = NULL
+};
+
+dc_custom_serial_t* get_qt_serial_ops(device_data_t *data)
+{
+	if (data->bluetooth_mode == BT_RFCOMM)
+		return &qt_serial_ops;
+	return &qt_serial_ble_ops;
 }
 
 }

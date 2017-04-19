@@ -323,6 +323,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	if (ui.bluetoothMode->isChecked() && btDeviceSelectionDialog != NULL)
 		data.bluetooth_mode = btDeviceSelectionDialog->getSelectedDeviceMode();
 	if (data.bluetooth_mode) {
+		fprintf(stderr, "Using bluetooth mode %d\n", data.bluetooth_mode);
 		// Get the selected device address
 		data.devname = strdup(btDeviceSelectionDialog->getSelectedDeviceAddress().toUtf8().data());
 	} else
