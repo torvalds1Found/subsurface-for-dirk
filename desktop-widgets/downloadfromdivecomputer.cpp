@@ -319,8 +319,10 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	data.vendor = strdup(ui.vendor->currentText().toUtf8().data());
 	data.product = strdup(ui.product->currentText().toUtf8().data());
 #if defined(BT_SUPPORT)
-	data.bluetooth_mode = ui.bluetoothMode->isChecked();
-	if (data.bluetooth_mode && btDeviceSelectionDialog != NULL) {
+	data.bluetooth_mode = BT_NONE;
+	if (ui.bluetoothMode->isChecked() && btDeviceSelectionDialog != NULL)
+		data.bluetooth_mode = btDeviceSelectionDialog->getSelectedDeviceMode();
+	if (data.bluetooth_mode) {
 		// Get the selected device address
 		data.devname = strdup(btDeviceSelectionDialog->getSelectedDeviceAddress().toUtf8().data());
 	} else

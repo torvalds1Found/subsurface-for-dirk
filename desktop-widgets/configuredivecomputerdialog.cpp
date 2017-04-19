@@ -1248,7 +1248,7 @@ void ConfigureDiveComputerDialog::bluetoothSelectionDialogIsFinished(int result)
 {
 	if (result == QDialog::Accepted) {
 		ui.device->setCurrentText(btDeviceSelectionDialog->getSelectedDeviceAddress());
-		device_data.bluetooth_mode = true;
+		device_data.bluetooth_mode = btDeviceSelectionDialog->getSelectedDeviceMode();
 
 		ui.progressBar->setFormat("Connecting to device...");
 		dc_open();

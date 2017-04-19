@@ -20,6 +20,12 @@
 extern "C" {
 #endif
 
+enum bluetooth_mode {
+	BT_NONE = 0,
+	BT_RFCOMM,
+	BT_LE
+};
+
 /* don't forget to include the UI toolkit specific display-XXX.h first
    to get the definition of progressbar_t */
 typedef struct device_data_t
@@ -37,7 +43,7 @@ typedef struct device_data_t
 	bool create_new_trip;
 	bool libdc_log;
 	bool libdc_dump;
-	bool bluetooth_mode;
+	enum bluetooth_mode bluetooth_mode;
 	FILE *libdc_logfile;
 	struct dive_table *download_table;
 } device_data_t;

@@ -5,6 +5,7 @@
 
 #include "ui_btdeviceselectiondialog.h"
 #include "btdeviceselectiondialog.h"
+#include "core/libdivecomputer.h"
 
 #if defined(Q_OS_WIN)
 Q_DECLARE_METATYPE(QBluetoothDeviceDiscoveryAgent::Error)
@@ -423,6 +424,18 @@ QString BtDeviceSelectionDialog::getSelectedDeviceAddress()
 	}
 
 	return QString();
+}
+
+enum bluetooth_mode BtDeviceSelectionDialog::getSelectedDeviceMode()
+{
+	if (selectedRemoteDeviceInfo) {
+		QBluetoothDeviceInfo *device = selectedRemoteDeviceInfo.data();
+
+		if (device->coreConfigurations() & QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
+			return BT_LE;
+		return BT_RFCOMM;
+	}
+	return BT_NONE;
 }
 
 QString BtDeviceSelectionDialog::getSelectedDeviceName()

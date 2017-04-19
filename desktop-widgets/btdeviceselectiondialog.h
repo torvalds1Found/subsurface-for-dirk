@@ -8,6 +8,8 @@
 #include <QtBluetooth/qbluetoothglobal.h>
 #include <QtBluetooth/QBluetoothDeviceDiscoveryAgent>
 
+#include "core/libdivecomputer.h"
+
 #if defined(Q_OS_WIN)
 	#include <QThread>
 	#include <winsock2.h>
@@ -58,6 +60,7 @@ public:
 	~BtDeviceSelectionDialog();
 	QString getSelectedDeviceAddress();
 	QString getSelectedDeviceName();
+	enum bluetooth_mode getSelectedDeviceMode();
 
 private slots:
 	void on_changeDeviceState_clicked();
