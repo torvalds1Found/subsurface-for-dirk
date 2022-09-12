@@ -1212,13 +1212,54 @@ static void fixup_no_o2sensors(struct divecomputer *dc)
 
 static void fixup_dc_sample_sensors(struct divecomputer *dc, int nr_cylinders)
 {
+	int cyl;
+	unsigned long sensor_mask = 0;
+	unsigned int renumber[MAX_SENSORS];
+
 	for (int i = 0; i < dc->samples; i++) {
 		struct sample *s = dc->sample + i;
 		for (int j = 0; j < MAX_SENSORS; j++) {
-			if (s->sensor[j] < 0 || s->sensor[j] >= nr_cylinders) {
+			int sensor = s->sensor[j];
+
+			if (!s->pressure[j].mbar)
+				continue;
+			// No invalid sensor ID's, please
+			if (sensor < 0 || sensor > MAX_SENSORS) {
 				s->sensor[j] = NO_SENSOR;
 				s->pressure[j].mbar = 0;
+				continue;
 			}
+			sensor_mask |= 1ul << sensor;
+		}
+	}
+
+	// No sensor data?
+	if (!sensor_mask)
+		return;
+
+	// Sensor data proper subset of cylinders?
+	if (sensor_mask < (1ul << nr_cylinders))
+		return;
+
+	// We'll need to fix up sensor numbers..
+	cyl = 0;
+	for (int i = 0; i < MAX_SENSORS; i++) {
+		renumber[i] = cyl;
+		cyl += sensor_mask & 1;
+		sensor_mask >>= 1;
+	}
+
+	if (cyl > nr_cylinders)
+		SSRF_INFO("fixup_dc_sample_sensors: more sensors than cylinders in dive!");
+
+	// Just rename all the sensors for this DC to the minimal ones
+	for (int i = 0; i < dc->samples; i++) {
+		struct sample *s = dc->sample + i;
+		for (int j = 0; j < MAX_SENSORS; j++) {
+			int sensor = s->sensor[j];
+			if (sensor < 0)
+				continue;
+			s->sensor[j] = renumber[sensor];
 		}
 	}
 }
