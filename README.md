@@ -11,6 +11,7 @@
 ![Build Status](https://github.com/subsurface/subsurface/workflows/Ubuntu%2020.04%20/%20Qt%205.12--/badge.svg)
 ![Build Status](https://github.com/subsurface/subsurface/workflows/Ubuntu%2022.04%20/%20Qt%205.15--/badge.svg)
 
+[!WARNING]
 This is the README file for Subsurface 5.0.9
 
 Please check the `ReleaseNotes.txt` for details about new features and
